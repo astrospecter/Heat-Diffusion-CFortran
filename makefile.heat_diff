@@ -1,0 +1,27 @@
+.KEEP_STATE:
+.SUFFIXES: .o .f90 .c .mod
+
+FLAGS = -O3
+
+F90 = gfortran
+CC = cc
+
+IPATH=
+LPATH= -L/usr/X11R6/lib/
+GLUTLIB= -lglut -lGLU -lGL -lXext -lX11
+MLIB =
+
+.f90.o:
+	$(F90) -c $(FLAGS) $*.f90
+.f90.mod:
+	$(F90) -c $(FLAGS) $*.f90
+.c.o:
+	$(CC) -c $(FLAGS) $(IPATH) $*.c
+.mod.o:
+
+heat_diffusion: heat_diffusion_driver.o heat_diffusion_sub.o
+	      $(F90) -o heat_diffuse heat_diffusion_driver.o heat_diffusion_sub.o $(FLAGS) $(MLIB) $(LPATH) $(GLUTLIB)
+
+heat_diffusion_driver.o: heat_diffusion_driver.c
+
+heat_diffusion_sub.o: heat_diffusion_sub.f90
